@@ -27,13 +27,13 @@ Otherwise, the service worker asks `openai/gpt-4.1-mini` through OpenRouter to e
 
 Classifying a product and estimating its weight costs about $0.0003, so one dollar covers roughly 3,000 products. The extension saves both answers, so opening the same product again costs nothing.
 
-| Call                                                | Model          | Tokens               | Cost          |
-| --------------------------------------------------- | -------------- | -------------------- | ------------- |
-| Tariff line, first pass                             | jev            | about 500 in         | $0.00002      |
-| Tariff line, second pass, only below 50% confidence | jev            | 130 to 1,800 in      | under $0.0001 |
-| Package weight                                      | `gpt-4.1-mini` | about 540 in, 35 out | $0.0003       |
+| Call                                                | Model          | Tokens per call             | Cost per call |
+| --------------------------------------------------- | -------------- | --------------------------- | ------------- |
+| Tariff line, first pass                             | jev            | 930 to 1,010 in             | $0.00004      |
+| Tariff line, second pass, only below 50% confidence | jev            | 1,410 to 1,530 in           | $0.00006      |
+| Package weight                                      | `gpt-4.1-mini` | 430 to 500 in, 30 to 60 out | $0.00026      |
 
-These figures use OpenRouter's list prices on 27 November 2026. jev costs $0.042 per million input tokens and its output is free. `gpt-4.1-mini` costs $0.40 per million input tokens and $1.60 per million output tokens. The token counts come from the requests the extension builds for a sample laptop listing, counted with the GPT-4o tokenizer, so the jev counts are approximate.
+These figures are measured, from OpenRouter's activity log. The extension made 35 calls between 22 and 27 November 2026, and they cost $0.004 in total. jev bills $0.042 per million input tokens and its output is free. `gpt-4.1-mini` bills $0.40 per million input tokens and $1.60 per million output tokens.
 
 ## Import cost calculation
 
