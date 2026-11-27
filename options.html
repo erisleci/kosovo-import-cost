@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Kosovo import cost options</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 32px 16px;
+        background: #0f1215;
+        color: #e8ebee;
+        font:
+          14px/1.5 system-ui,
+          sans-serif;
+      }
+      main {
+        max-width: 520px;
+        margin: 0 auto;
+      }
+      h1 {
+        font-size: 22px;
+        margin: 0 0 4px;
+      }
+      p {
+        color: #a1a9b3;
+        margin: 4px 0 0;
+      }
+      label {
+        display: block;
+        margin-top: 24px;
+        font-weight: 600;
+      }
+      input[type="password"] {
+        width: 100%;
+        box-sizing: border-box;
+        height: 38px;
+        margin-top: 6px;
+        padding: 0 10px;
+        border: 1px solid #363e48;
+        border-radius: 8px;
+        background: #1d2228;
+        color: inherit;
+        font: inherit;
+      }
+      .check {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        font-weight: 400;
+      }
+      a {
+        color: #8fb1ff;
+      }
+      button {
+        margin-top: 24px;
+        height: 36px;
+        padding: 0 16px;
+        border: 0;
+        border-radius: 999px;
+        background: #3168e0;
+        color: #fff;
+        font:
+          600 14px system-ui,
+          sans-serif;
+        cursor: pointer;
+      }
+      .status {
+        margin-left: 12px;
+        color: #4fc58c;
+      }
+      .muted {
+        color: #747d88;
+        font-size: 13px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Kosovo import cost</h1>
+      <p>Settings for the calculator on Amazon pages.</p>
+
+      <label for="key">OpenRouter API key</label>
+      <input
+        id="key"
+        type="password"
+        autocomplete="off"
+        placeholder="sk-or-..."
+      />
+      <p class="muted">
+        Used to classify products with jev and estimate total package weight
+        when Amazon only lists bare item weight. Create one at
+        <a
+          href="https://openrouter.ai/settings/keys"
+          target="_blank"
+          rel="noreferrer"
+          >openrouter.ai/settings/keys</a
+        >. The key stays in this browser. Without it, the extension falls back
+        to keyword matching and Amazon's listed weight.
+      </p>
+
+      <label class="check"
+        ><input id="outside" type="checkbox" /> Deliver outside Prishtina by
+        default</label
+      >
+
+      <button id="save" type="button">Save</button
+      ><span class="status" id="status"></span>
+      <button id="clear" type="button" style="background: #262c33">
+        Forget saved products
+      </button>
+      <p class="muted" id="saved"></p>
+
+      <p class="muted" id="tariff"></p>
+    </main>
+    <script src="options.js"></script>
+  </body>
+</html>

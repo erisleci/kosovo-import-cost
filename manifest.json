@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "Kosovo import cost",
+  "version": "0.1.0",
+  "description": "Estimates Paketos shipping, Kosovo customs duty and VAT for Amazon products.",
+  "permissions": ["storage"],
+  "host_permissions": [
+    "https://www.amazon.com/*",
+    "https://openrouter.ai/*",
+    "https://www.ecb.europa.eu/*"
+  ],
+  "background": { "service_worker": "background.js", "type": "module" },
+  "content_scripts": [
+    {
+      "matches": ["https://www.amazon.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": { "default_title": "Kosovo import cost options" },
+  "options_page": "options.html"
+}
