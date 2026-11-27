@@ -4,7 +4,7 @@
 
 This Chrome extension adds a "Kosovo cost" button to Amazon.com product pages, search results, and the shopping cart. Clicking the button opens a floating calculator prefilled with the product price, Paketos air shipping, Kosovo customs duty, VAT, and landed cost in EUR.
 
-Ordering from Amazon.com to Kosovo through a US freight forwarder such as Paketos involves costs that never appear on the listing. Shipping depends on the parcel weight, rounded up to whole pounds. Customs duty depends on which of 10,610 Kosovo tariff lines applies. VAT applies to the customs value plus duty, and a discount lowers what you pay without lowering the customs value. The extension reads what Amazon provides, calls two models through OpenRouter to fill in the missing tariff line and shipped package weight, and computes the full landed cost on the page.
+Ordering from Amazon.com to Kosovo through a US freight forwarder such as Paketos involves costs that never appear on the listing. Shipping depends on the parcel weight, rounded up to whole pounds. Customs duty depends on which of 10,610 Kosovo tariff lines applies. VAT applies to the customs value plus duty, and a discount lowers what you pay without lowering the customs value. The extension reads what Amazon provides, calls two models through OpenRouter to fill in the missing tariff line and shipped package weight, and computes the full landed cost on the page. The two model calls cost about $0.0003 per product.
 
 <!-- screenshot: calculator panel open on an Amazon.com product page showing the tariff line, estimated package weight, and landed cost breakdown -->
 
@@ -22,6 +22,18 @@ The extension saves the chosen tariff code per product in `chrome.storage.local`
 Paketos bills by shipped parcel weight, while Amazon listings often show only bare item weight or omit weight altogether. When Amazon lists a package weight that is at least as heavy as the listed item weight, the extension uses it directly.
 
 Otherwise, the service worker asks `openai/gpt-4.1-mini` through OpenRouter to estimate the total shipped parcel weight, including retail packaging, accessories, and Amazon's outer shipping box. It sends the title, category breadcrumbs, listed weights, dimensions, and box contents when present. The extension saves estimates and manual edits per product in `chrome.storage.local` so each product costs one estimate. Without an OpenRouter key, it falls back to Amazon's listed weight when available.
+
+## Cost per product
+
+Classifying a product and estimating its weight costs about $0.0003, so one dollar covers roughly 3,000 products. The extension saves both answers, so opening the same product again costs nothing.
+
+| Call                                                | Model          | Tokens               | Cost          |
+| --------------------------------------------------- | -------------- | -------------------- | ------------- |
+| Tariff line, first pass                             | jev            | about 500 in         | $0.00002      |
+| Tariff line, second pass, only below 50% confidence | jev            | 130 to 1,800 in      | under $0.0001 |
+| Package weight                                      | `gpt-4.1-mini` | about 540 in, 35 out | $0.0003       |
+
+These figures use OpenRouter's list prices on 27 November 2026. jev costs $0.042 per million input tokens and its output is free. `gpt-4.1-mini` costs $0.40 per million input tokens and $1.60 per million output tokens. The token counts come from the requests the extension builds for a sample laptop listing, counted with the GPT-4o tokenizer, so the jev counts are approximate.
 
 ## Import cost calculation
 
