@@ -3,6 +3,7 @@ import { loadSettings } from "./messages"
 
 const key = document.querySelector<HTMLInputElement>("#key")!
 const outside = document.querySelector<HTMLInputElement>("#outside")!
+const estimate = document.querySelector<HTMLInputElement>("#estimate")!
 const status = document.querySelector<HTMLElement>("#status")!
 
 function show(message: string) {
@@ -13,6 +14,7 @@ function show(message: string) {
 void loadSettings().then((settings) => {
   key.value = settings.openRouterKey
   outside.checked = settings.outsidePrishtina
+  estimate.checked = settings.estimateWeight
 })
 
 void fetch(chrome.runtime.getURL("tariff.json"))
@@ -29,6 +31,7 @@ document.querySelector("#save")!.addEventListener("click", async () => {
   await chrome.storage.local.set({
     openRouterKey: key.value.trim(),
     outsidePrishtina: outside.checked,
+    estimateWeight: estimate.checked,
   })
   show("Saved")
 })

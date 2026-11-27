@@ -23,7 +23,7 @@ export type WeightResolution = {
   saved: boolean
   /** Short breakdown from OpenRouter, shown as a tooltip. */
   reason: string | null
-  /** Why estimation was skipped or failed, when weightLb is null. */
+  /** Why there is no estimate, when weightLb is null. Shown in the panel. */
   note: string | null
 }
 
@@ -65,11 +65,14 @@ export type Response<TRequest extends Request> = TRequest extends {
 export type Settings = {
   openRouterKey: string
   outsidePrishtina: boolean
+  /** Ask OpenRouter for a package weight without waiting for "Estimate". */
+  estimateWeight: boolean
 }
 
 export const defaultSettings: Settings = {
   openRouterKey: "",
   outsidePrishtina: false,
+  estimateWeight: true,
 }
 
 type Reply<TValue> = { ok: true; value: TValue } | { ok: false; error: string }

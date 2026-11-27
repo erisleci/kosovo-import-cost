@@ -273,6 +273,16 @@ async function resolveWeight(
         note: null,
       }
     }
+    const { estimateWeight } = await loadSettings()
+    if (!estimateWeight) {
+      return {
+        weightLb: null,
+        source: null,
+        saved: false,
+        reason: null,
+        note: 'Click "Estimate" for the package weight.',
+      }
+    }
   }
   let call = pendingWeight.get(key)
   if (!call) {

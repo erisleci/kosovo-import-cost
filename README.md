@@ -23,6 +23,8 @@ Paketos bills by shipped parcel weight, while Amazon listings often show only ba
 
 Otherwise, the service worker asks `openai/gpt-4.1-mini` through OpenRouter to estimate the total shipped parcel weight, including retail packaging, accessories, and Amazon's outer shipping box. It sends the title, category breadcrumbs, listed weights, dimensions, and box contents when present. The extension saves estimates and manual edits per product in `chrome.storage.local` so each product costs one estimate. Without an OpenRouter key, it falls back to Amazon's listed weight when available.
 
+The estimate is optional. A checkbox in the options turns automatic estimates off, and the calculator then uses Amazon's listed weight. You can still click "Estimate" in the calculator to ask for one product.
+
 ## Cost per product
 
 Classifying a product and estimating its weight costs about $0.0003, so one dollar covers roughly 3,000 products. The extension saves both answers, so opening the same product again costs nothing.
@@ -57,7 +59,7 @@ npm install
 npm run build
 ```
 
-Open `chrome://extensions`, turn on Developer mode, choose "Load unpacked", and select the `dist` folder. Click the extension's toolbar icon to open the options page, where you can add an OpenRouter API key, set delivery outside Prishtina as the default, or clear saved products.
+Open `chrome://extensions`, turn on Developer mode, choose "Load unpacked", and select the `dist` folder. Click the extension's toolbar icon to open the options page, where you can add an OpenRouter API key, set delivery outside Prishtina as the default, turn automatic weight estimates off, or clear saved products.
 
 ## Development
 

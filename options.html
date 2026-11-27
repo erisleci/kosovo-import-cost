@@ -103,6 +103,16 @@
         default</label
       >
 
+      <label class="check"
+        ><input id="estimate" type="checkbox" /> Estimate package weight
+        automatically</label
+      >
+      <p class="muted">
+        Asks gpt-4.1-mini for the shipped weight when Amazon lists only the item
+        weight. When this is off, the calculator uses Amazon's listed weight,
+        and you can click "Estimate" in the calculator for a single product.
+      </p>
+
       <button id="save" type="button">Save</button
       ><span class="status" id="status"></span>
       <button id="clear" type="button" style="background: #262c33">

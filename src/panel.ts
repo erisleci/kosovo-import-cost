@@ -338,12 +338,16 @@ export async function openPanel(
     }
   }
 
+  // Set from the options before the first weight request.
+  let autoEstimate = true
+
   async function resolvePackageWeight(forceEstimate: boolean) {
     const id = ++weightRequestId
     const estimateButton = $<HTMLButtonElement>("[data-estimate-weight]")
     const hint = $("[data-weight-hint]")
     const found = loadedDetails
-    const willEstimate = forceEstimate || found?.weightKind !== "package"
+    const willEstimate =
+      forceEstimate || (autoEstimate && found?.weightKind !== "package")
 
     if (forceEstimate) {
       weightEdited = false
@@ -471,6 +475,7 @@ export async function openPanel(
 
   const settings = await loadSettings()
   input("outside").checked = settings.outsidePrishtina
+  autoEstimate = settings.estimateWeight
   recalculate()
 
   send({ type: "rate" }).then((rate) => {
