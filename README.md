@@ -2,6 +2,15 @@
 
 A Chrome extension that adds a "Kosovo cost" button to Amazon.com product pages, search results and the cart. The button opens a calculator with the price, Paketos shipping, customs duty and VAT filled in.
 
+## Where it uses AI
+
+Two inputs to the calculation are not on the Amazon page, so the extension asks a model for them through OpenRouter.
+
+- **Tariff classification.** Kosovo's customs tariff has 10,610 lines, and the duty rate depends on which line a product falls under. [jev](https://openrouter.ai/docs/guides/community/jev-tutorial), a model that answers a multiple-choice question with a probability for each option, picks the line from the product's title and category. When jev is less than 50% confident, the extension asks again with only the lines from the likeliest subheadings.
+- **Package weight.** Paketos bills by shipped weight, but Amazon often lists only the weight of the item. `openai/gpt-4.1-mini` estimates the weight of the whole parcel from the title, category, dimensions and box contents.
+
+The extension saves both answers per product, so it asks once per product. Without an API key it falls back to keyword matching and the listed weight.
+
 ## Install
 
 ```sh
@@ -38,7 +47,7 @@ The tariff (`public/tariff.json`) is a trimmed copy of the table behind dogana.r
 
 The background worker picks a tariff line in up to two steps:
 
-1. [jev](https://openrouter.ai/docs/guides/community/jev-tutorial), an OpenRouter model that answers multiple-choice questions with a probability per option, chooses one of the common product kinds in `src/categories.ts`, each tied to a tariff code.
+1. jev chooses one of the common product kinds in `src/categories.ts`, each tied to a tariff code.
 2. If jev is less than 50% confident, it is asked again. The options are every tariff line in the same subheading (first six digits) as the codes of its three likeliest product types, without civil aircraft lines. For headphones that is all of 8518 30, so jev chooses between the 0% and 10% duty lines. If jev answers "other", there is no second request. The panel falls back to keywords or asks you to pick a line with "Change".
 
 The chosen line is saved per ASIN in `chrome.storage.local`, so jev is called once per product. A line you pick with "Change" in the panel is saved the same way and replaces jev's choice. Only the code is saved, so rates come from the current tariff. The options page shows how many products are saved and can forget them. Without an OpenRouter key, or when jev fails, the extension falls back to keyword matching against the same categories. You can always change the line with "Change" in the panel.
